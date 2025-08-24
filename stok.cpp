@@ -87,15 +87,15 @@ std::vector<std::string> data;
 		bool ketemu = false;
 		while(!ketemu){
 		std::string cari = input_string("Masukan kode : ");
-		for(const auto &kode : bulan_arr){
+		    for(const auto &kode : bulan_arr){
 			if(kode.find(cari) != std::string::npos){ // mencari sebagian
 				std::cout << kode << std::endl;		
 				ketemu = true;
 			}
-		}
-		if(!ketemu){
-		  std::cout << "part tidak ada\n";
-		}
+		    }
+		        if(!ketemu){
+		          std::cout << "part tidak ada\n";
+		        }
 		}
 
 
