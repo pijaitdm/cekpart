@@ -23,7 +23,7 @@ while(true){
 
 std::string folder_bulan(){
 std::vector<std::string> daftar_bulan =
-{"januari","februari","maret","april","mei","juni","juli","agustus","september","november","desember"
+{"januari","februari","maret","april","mei","juni","juli","agustus","september","oktober","november","desember"
 };
 bool valid = false;
 while(true){
