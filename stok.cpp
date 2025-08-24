@@ -1,4 +1,4 @@
-/**
+  /**
    * Created by @Pijai
    */
 
@@ -40,18 +40,19 @@
           "januari", "februari", "maret", "april", "mei", "juni",
           "juli", "agustus", "september", "oktober", "november", "desember"
       };
-
+      std::string path_file;
       while (true) {
           std::string cekbulan = input_string("Buka stok bulan: ");
           std::transform(cekbulan.begin(), cekbulan.end(), cekbulan.begin(), ::tolower); // merubah ke huruf kecil semua
           for (const auto &isi : daftar_bulan) {
               if (cekbulan == isi) {
-                  const std::string path_file = "bulan/" + cekbulan + ".csv";
-                  if (std::filesystem::exists(path_file)) {
-                      std::cout << "Membuka -> " << path_file << std::endl;
-                      return path_file;
+                  path_file = "bulan/" + cekbulan + ".csv";
+                  continue;
                   }
               }
+              if (std::filesystem::exists(path_file)) {
+                      std::cout << "Membuka -> " << path_file << std::endl;
+                      return path_file;
           }
           std::cout << "File tidak ditemukan\n\n";
       }
