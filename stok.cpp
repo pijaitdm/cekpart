@@ -44,7 +44,10 @@
       //std::string path_file;
       while (true) {
           std::string cekbulan = input_string("Buka stok bulan: ");
-          std::transform(cekbulan.begin(), cekbulan.end(), cekbulan.begin(), ::tolower); // merubah ke huruf kecil semua
+          std::transform(cekbulan.begin(), cekbulan.end(), cekbulan.begin(), ::tolower); // merubah ke huruf kecil semua      
+          if(cekbulan == "exit"){
+            return "";
+            }
       
           for (const auto &isi : daftar_bulan) {
               if (cekbulan == isi) {
@@ -61,10 +64,13 @@
 
   int main() {
       buat_folder();
-      
-      
+      std::cout << "- CEK STOK PART -\n";
+      std::cout << "ketik exit untuk keluar !!\n\n";
       std::vector<std::string> data;
       std::string data_csv = cek_file();
+      if(data_csv.empty()){
+          return 0;
+        }
 
       std::ifstream file(data_csv);
       if (!file.is_open()) {
@@ -81,11 +87,10 @@
       bool valid;
 
       do {
-          cari = input_string("\nKetik kode/nama Part atau  'exit' untuk keluar\n input: ");
+          cari = input_string("\nKetik kode/nama Part : ");
           std::transform(cari.begin(), cari.end(), cari.begin(), ::toupper);
           std::cout << "\n";
           if (cari =="EXIT") {
-              std::cout << "Keluar\n";
               break;
           }
           
