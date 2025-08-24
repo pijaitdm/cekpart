@@ -12,12 +12,11 @@
 
 std::string input_string(const std::string &pesan){
 std::string input;
-while(true){
+do{
         std::cout << pesan;
 	std::getline(std::cin,input);
-	if(!input.empty()){
-	return input;
-	}
+
+	}while(input.length() <= 2);
 }
 }
 
