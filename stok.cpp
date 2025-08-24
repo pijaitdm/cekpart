@@ -82,12 +82,11 @@ std::vector<std::string> data;
 			data.push_back(line);
 		}
 
-		std::vector <std::string> bulan_arr = data;
 	        
 		bool ketemu = false;
 		while(!ketemu){
 		std::string cari = input_string("Masukan kode : ");
-		    for(const auto &kode : bulan_arr){
+		    for(const auto &kode : data){
 			if(kode.find(cari) != std::string::npos){ // mencari sebagian
 				std::cout << kode << std::endl;		
 				ketemu = true;
