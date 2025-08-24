@@ -1,106 +1,105 @@
 /**
- * create by @Pijai
- **/
+   * Created by @Pijai
+   */
 
-#include <iostream>
-#include <string>
-#include <filesystem>
-#include <sstream>
-#include <fstream>
-#include <vector>
+  #include <iostream>
+  #include <string>
+  #include <filesystem>
+  #include <sstream>
+  #include <fstream>
+  #include <vector>
+  #include <algorithm> //untuk  mengubah huruf tolower atau toupper untuk menjadi huruf besar
 
-
-std::string input_string(const std::string &pesan){
-std::string input;
-do{
-        std::cout << pesan;
-	std::getline(std::cin,input);
-
-	}while(input.length() <= 2);
-}
-}
-
-std::string folder_bulan(){
-std::vector<std::string> daftar_bulan =
-{"januari","februari","maret","april","mei","juni","juli","agustus","september","oktober","november","desember"
-};
-bool valid = false;
-while(true){
-    std::string cekbulan = input_string("buka stok bulan : ");
-    for(const auto &isi : daftar_bulan){
-      if(cekbulan == isi){
-        valid = true;
-        return cekbulan;
+  // Membuat folder "bulan" dan "pesanan" jika belum ada
+  void buat_folder() {
+      std::vector<std::string> folder_arr = {"bulan", "pesanan"};
+      for (const auto &cetak : folder_arr) {
+          if (!std::filesystem::exists(cetak)) {
+              std::cout << "Berhasil membuat -> " << cetak << std::endl;
+              std::filesystem::create_directories(cetak);
+          }
       }
-    }
-    if(!valid){
-        std::cout<<"tidak ditemukan\n";
+  }
+
+  // Input string dengan validasi minimal 3 karakter
+  std::string input_string(const std::string &pesan) {
+      std::string input;
+      do {
+          std::cout << pesan;
+          std::getline(std::cin, input);
+          if (input.length() > 2) {
+              return input;
+          }
+          std::cout << "Inputan tidak valid\n\n";
+      } while (true);
+  }
+
+  // Mengecek file CSV berdasarkan input nama bulan
+  std::string cek_file() {
+      std::vector<std::string> daftar_bulan = {
+          "januari", "februari", "maret", "april", "mei", "juni",
+          "juli", "agustus", "september", "oktober", "november", "desember"
+      };
+
+      while (true) {
+          std::string cekbulan = input_string("Buka stok bulan: ");
+          std::transform(cekbulan.begin(), cekbulan.end(), cekbulan.begin(), ::tolower); // merubah ke huruf kecil semua
+          for (const auto &isi : daftar_bulan) {
+              if (cekbulan == isi) {
+                  const std::string path_file = "bulan/" + cekbulan + ".csv";
+                  if (std::filesystem::exists(path_file)) {
+                      std::cout << "Membuka -> " << path_file << std::endl;
+                      return path_file;
+                  }
+              }
+          }
+          std::cout << "File tidak ditemukan\n\n";
       }
-}
-
-}
-
-void buat_folder(){
-
-	std::vector<std::string> folder_arr = {"bulan","pesanan"};
-		for(const auto &cetak : folder_arr){
-			if(!std::filesystem::exists(cetak)){
-				std::cout << "Berhasil membuat -> " << cetak << std::endl;
-				std::filesystem::create_directories(cetak);
-			}
-		}
-}
+  }
 
 
-//membuat pencarian nama file dengan user input
-std::string cek_file(){
+  int main() {
+      buat_folder();
 
-while(true){
-std::string namafile = folder_bulan();
+      std::vector<std::string> data;
+      std::string data_csv = cek_file();
 
-const std::string path_file = "bulan/" + namafile + ".csv";
+      std::ifstream file(data_csv);
+      if (!file.is_open()) {
+          std::cerr << "Gagal membuka file -> " << data_csv << std::endl;
+          return 1;
+      }
 
-    if(std::filesystem::exists(path_file)){
-        std::cout << "membuka -> " << path_file << std::endl;
-        return path_file;
-    }
-    else{std::cout << "file tidak ditemukan \n";}
-}
-}
+      std::string line;
+      while (std::getline(file, line)) {
+          data.push_back(line);
+      }
 
+      std::string cari;
+      bool valid;
 
-int main(){
-buat_folder();
+      do {
+          cari = input_string("\nKetik kode/nama Part atau  'exit' untuk keluar\n input: ");
+          std::transform(cari.begin(), cari.end(), cari.begin(), ::toupper);
+          std::cout << "\n";
+          if (cari =="EXIT") {
+              std::cout << "Keluar\n";
+              break;
+          }
+          
+          valid = false;
+          for (const auto &kode : data) {
+              if (kode.find(cari) != std::string::npos) {
+                  std::cout << kode << std::endl;
+                  valid = true;
+              }
+          }
 
-std::vector<std::string> data;
+          if (!valid) {
+              std::cout << "-\nPart tidak ada\n";
+          }
 
-	        std::string data_csv = cek_file();
-	        
-		std::ifstream file(data_csv);
-		if(!file.is_open()){
-		  std::cerr << "gagal membuka file -> " << data_csv << std::endl;
-		  return 1;
-		}
-		std::string line;
-		while(std::getline(file, line)){
-			data.push_back(line);
-		}
+      } while (true);
 
-	        
-		bool ketemu = false;
-		while(!ketemu){
-		std::string cari = input_string("Masukan kode : ");
-		    for(const auto &kode : data){
-			if(kode.find(cari) != std::string::npos){ // mencari sebagian
-				std::cout << kode << std::endl;		
-				ketemu = true;
-			}
-		    }
-		        if(!ketemu){
-		          std::cout << "part tidak ada\n";
-		        }
-		}
-
-
-return 0;
-}
+      return 0;
+  }
