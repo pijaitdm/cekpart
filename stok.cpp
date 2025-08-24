@@ -36,7 +36,7 @@
 
   // Mengecek file CSV berdasarkan input nama bulan
   std::string cek_file() {
-      std::vector<std::string> daftar_bulan = {
+      const std::vector<std::string> daftar_bulan = {
           "januari", "februari", "maret", "april", "mei", "juni",
           "juli", "agustus", "september", "oktober", "november", "desember"
       };
@@ -60,53 +60,50 @@
           }
           
       }
+int main() {
+    buat_folder();
+    std::cout << "- CEK STOK PART -\n";
+    std::cout << "ketik exit untuk keluar !!\n\n";
+    
+    std::string data_csv = cek_file();
+    if (data_csv.empty()) {
+        return 0;
+    }
 
+    std::ifstream file(data_csv);
+    if (!file.is_open()) {
+        std::cerr << "Gagal membuka file -> " << data_csv << std::endl;
+        return 1;
+    }
 
-  int main() {
-      buat_folder();
-      std::cout << "- CEK STOK PART -\n";
-      std::cout << "ketik exit untuk keluar !!\n\n";
-      std::vector<std::string> data;
-      std::string data_csv = cek_file();
-      if(data_csv.empty()){
-          return 0;
+    std::string cari;
+    do {
+        std::cout << "\nKetik kode/nama Part : ";
+        std::cout<< "-\n";
+        std::getline(std::cin, cari);
+        
+        if (cari == "exit" || cari == "EXIT") {
+            break;
         }
 
-      std::ifstream file(data_csv);
-      if (!file.is_open()) {
-          std::cerr << "Gagal membuka file -> " << data_csv << std::endl;
-          return 1;
-      }
+        std::string line;
+        bool ditemukan = false;
+        file.clear(); // Bersihkan flag EOF
+        file.seekg(0); // Kembali ke awal file
 
-      std::string line;
-      while (std::getline(file, line)) {
-          data.push_back(line);
-      }
+        while (std::getline(file, line)) {
+            // Periksa baris saat ini untuk menemukan string
+            if (line.find(cari) != std::string::npos) {
+                std::cout << line << std::endl;
+                ditemukan = true;
+            }
+        }
+        
+        if (!ditemukan) {
+            std::cout << "-\nPart tidak ada\n";
+        }
 
-      std::string cari;
-      bool valid;
-
-      do {
-          cari = input_string("\nKetik kode/nama Part : ");
-          std::transform(cari.begin(), cari.end(), cari.begin(), ::toupper);
-          std::cout << "\n";
-          if (cari =="EXIT") {
-              break;
-          }
-          
-          valid = false;
-          for (const auto &kode : data) {
-              if (kode.find(cari) != std::string::npos) {
-                  std::cout << kode << std::endl;
-                  valid = true;
-              }
-          }
-
-          if (!valid) {
-              std::cout << "-\nPart tidak ada\n";
-          }
-
-      } while (true);
-
-      return 0;
-  }
+    } while (true);
+    
+    return 0;
+}
