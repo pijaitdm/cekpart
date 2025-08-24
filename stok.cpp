@@ -75,8 +75,13 @@ buat_folder();
 
 std::vector<std::string> data;
 
-	std::string data_csv = cek_file();
+	        std::string data_csv = cek_file();
+	        
 		std::ifstream file(data_csv);
+		if(!file.is_open()){
+		  std::cerr << "gagal membuka file -> " << data_csv << std::endl;
+		  return 1;
+		}
 		std::string line;
 		while(std::getline(file, line)){
 			data.push_back(line);
