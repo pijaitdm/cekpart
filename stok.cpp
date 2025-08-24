@@ -79,8 +79,8 @@ int main() {
     std::string cari;
     do {
         std::cout << "\nKetik kode/nama Part : ";
-        std::cout<< "-\n";
         std::getline(std::cin, cari);
+          std::cout<< "-\n";
         
         if (cari == "exit" || cari == "EXIT") {
             break;
