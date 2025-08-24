@@ -17,7 +17,6 @@ while(true){
 	std::getline(std::cin,input);
 	if(!input.empty()){
 	return input;
-	break;
 	}
 }
 }
@@ -33,7 +32,6 @@ while(true){
       if(cekbulan == isi){
         valid = true;
         return cekbulan;
-        break;
       }
     }
     if(!valid){
@@ -66,7 +64,6 @@ const std::string path_file = "bulan/" + namafile + ".csv";
     if(std::filesystem::exists(path_file)){
         std::cout << "membuka -> " << path_file << std::endl;
         return path_file;
-      break;
     }
     else{std::cout << "file tidak ditemukan \n";}
 }
