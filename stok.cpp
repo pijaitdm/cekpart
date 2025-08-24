@@ -40,28 +40,29 @@
           "januari", "februari", "maret", "april", "mei", "juni",
           "juli", "agustus", "september", "oktober", "november", "desember"
       };
-      std::string path_file;
+      
+      //std::string path_file;
       while (true) {
           std::string cekbulan = input_string("Buka stok bulan: ");
           std::transform(cekbulan.begin(), cekbulan.end(), cekbulan.begin(), ::tolower); // merubah ke huruf kecil semua
+      
           for (const auto &isi : daftar_bulan) {
               if (cekbulan == isi) {
-                  path_file = "bulan/" + cekbulan + ".csv";
-                  continue;
+                  const std::string path_file = "bulan/" + cekbulan + ".csv";
+                  std::cout << "Membuka -> " << path_file << std::endl;
+                  return path_file;
                   }
               }
-              if (std::filesystem::exists(path_file)) {
-                      std::cout << "Membuka -> " << path_file << std::endl;
-                      return path_file;
+               std::cout << "File tidak ditemukan\n\n";
           }
-          std::cout << "File tidak ditemukan\n\n";
+          
       }
-  }
 
 
   int main() {
       buat_folder();
-
+      
+      
       std::vector<std::string> data;
       std::string data_csv = cek_file();
 
