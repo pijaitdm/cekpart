@@ -65,14 +65,14 @@
     std::string datacsv = cek_file();
        if (datacsv.empty()) {
         std::cout << "keluar\n";
-        return 0;
+        return false;
        }
        
        
     std::ifstream file(datacsv);
     if (!file.is_open()) {
         std::cerr << "Gagal membuka file -> " << datacsv << std::endl;
-        return 0;
+        return false;
     }
     datacsv.clear();
       
@@ -85,7 +85,7 @@
         
         if (cari == "EXIT") {
             std::cout << "keluar\n";
-            return 0;
+            return false;
         }
 
         std::string line;
@@ -106,7 +106,7 @@
         }
         
     } while (true);
-    return 0;
+    return false;
   }    
       
 int main() {
