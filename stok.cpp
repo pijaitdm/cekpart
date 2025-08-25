@@ -10,7 +10,7 @@
   #include <vector>
   #include <algorithm> //untuk  mengubah huruf tolower atau toupper untuk menjadi huruf besar
 
-  // Membuat folder "bulan" dan "pesanan" jika belum ada
+  // Membuat folder "bulan" 
   void buat_folder() {
       std::string folder = "bulan";
           if (!std::filesystem::exists(folder)) {
