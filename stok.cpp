@@ -12,13 +12,12 @@
 
   // Membuat folder "bulan" dan "pesanan" jika belum ada
   void buat_folder() {
-      std::vector<std::string> folder_arr = {"bulan", "pesanan"};
-      for (const auto &cetak : folder_arr) {
-          if (!std::filesystem::exists(cetak)) {
-              std::cout << "Berhasil membuat -> " << cetak << std::endl;
-              std::filesystem::create_directories(cetak);
+      std::string folder = "bulan";
+          if (!std::filesystem::exists(folder)) {
+              std::cout << "Berhasil membuat -> " << folder << std::endl;
+              std::filesystem::create_directories(folder);
           }
-      }
+      folder.clear();
   }
 
   // Input string dengan validasi minimal 3 karakter
@@ -58,32 +57,34 @@
               }
                std::cout << "File tidak ditemukan\n\n";
           }
-          
-      }
-int main() {
-    buat_folder();
-    std::cout << "- CEK STOK PART -\n";
-    std::cout << "ketik exit untuk keluar !!\n\n";
+        }
+        
     
-    std::string data_csv = cek_file();
-    if (data_csv.empty()) {
+    //logika proses pencarian
+    bool cari_part(){
+    std::string datacsv = cek_file();
+       if (datacsv.empty()) {
+        std::cout << "keluar\n";
+        return 0;
+       }
+       
+       
+    std::ifstream file(datacsv);
+    if (!file.is_open()) {
+        std::cerr << "Gagal membuka file -> " << datacsv << std::endl;
         return 0;
     }
-
-    std::ifstream file(data_csv);
-    if (!file.is_open()) {
-        std::cerr << "Gagal membuka file -> " << data_csv << std::endl;
-        return 1;
-    }
-
+    datacsv.clear();
+      
     std::string cari;
     do {
         std::cout << "\nKetik kode/nama Part : ";
         std::getline(std::cin, cari);
+        std::transform(cari.begin(), cari.end(), cari.begin(), ::toupper);
           std::cout<< "-\n";
         
-        if (cari == "exit" || cari == "EXIT") {
-            break;
+        if (cari == "EXIT") {
+            return 0;
         }
 
         std::string line;
@@ -102,8 +103,18 @@ int main() {
         if (!ditemukan) {
             std::cout << "-\nPart tidak ada\n";
         }
-
+        
     } while (true);
-    
+    return 0;
+  }    
+      
+int main() {
+    buat_folder();
+    std::cout << "        - CEK STOK PART -\n";
+    std::cout << "-----------------------------------\n";
+    std::cout << "      ketik exit untuk keluar !!\n";
+    std::cout << "-----------------------------------\n";
+    cari_part();
+        
     return 0;
 }
