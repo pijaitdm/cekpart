@@ -84,6 +84,7 @@
           std::cout<< "-\n";
         
         if (cari == "EXIT") {
+            std::cout << "keluar\n";
             return 0;
         }
 
